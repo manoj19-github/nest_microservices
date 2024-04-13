@@ -4,9 +4,14 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    @Inject('AUTH_SERVICE') private authService: ClientProxy,
-  ) {}
-  
+  constructor(@Inject('AUTH_SERVICE') private authService: ClientProxy) {}
+
+  @Get()
+  async getUser() {
+    console.log('hit ');
+    return this.authService.send(
+      { cmd: 'get-user' },
+      { hello: 'Manoj Santra' },
+    );
+  }
 }

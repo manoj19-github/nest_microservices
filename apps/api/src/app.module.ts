@@ -8,7 +8,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: './env',
+      envFilePath: './.env',
     }),
   ],
   controllers: [AppController],
@@ -25,7 +25,6 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
           transport: Transport.RMQ,
           options: {
             urls: [`amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_HOST}`],
-            noAck: false,
             queue: RABBITMQ_AUTH_QUEUE,
             queueOptions: {
               durable: true,
@@ -33,6 +32,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
           },
         });
       },
+      inject: [ConfigService],
     },
   ],
 })
